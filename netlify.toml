@@ -1,0 +1,57 @@
+# Configuración de Netlify — sitio estático, sin paso de compilación.
+[build]
+  publish = "public"
+  command = ""
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/data/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+# URLs limpias: /investigacion → /investigacion.html
+[[redirects]]
+  from = "/investigacion"
+  to = "/investigacion.html"
+  status = 200
+[[redirects]]
+  from = "/datos"
+  to = "/datos.html"
+  status = 200
+[[redirects]]
+  from = "/mercados"
+  to = "/mercados.html"
+  status = 200
+
+[[headers]]
+  for = "/data/macro/descargas/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+    Content-Disposition = "attachment"
+
+[[headers]]
+  for = "/assets/fonts/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"

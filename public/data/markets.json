@@ -1,0 +1,171 @@
+{
+  "sample": false,
+  "updated": "2026-11-10",
+  "sourceNote": "Banco Central de la República Dominicana (BCRD). Serie mensual de la tasa de cambio publicada por la DGII con datos del BCRD.",
+  "fx": {
+    "pair": "USD/DOP",
+    "buy": 60.4617,
+    "sell": 60.7601,
+    "date": "2026-11-10"
+  },
+  "policy": {
+    "tpm": 5.5,
+    "tpmPrev": 5.25,
+    "lastDecision": "2026-10-30",
+    "lastAction": "Se mantuvo",
+    "repo": 6.0,
+    "overnight": 4.75,
+    "inflationTarget": "4.0% ± 1.0%",
+    "inflationYoY": 5.12,
+    "inflationDate": "sept 2026",
+    "nextMeeting": "2026-11-30",
+    "nextMeetingLabel": "Finales de nov 2026",
+    "nextMeetingNote": "Fecha estimada · informe a miembros en 24 h"
+  },
+  "fxHistory": [
+    {
+      "date": "2025-11",
+      "value": 63.4798
+    },
+    {
+      "date": "2025-12",
+      "value": 63.0718
+    },
+    {
+      "date": "2026-01",
+      "value": 63.0442
+    },
+    {
+      "date": "2026-02",
+      "value": 61.7259
+    },
+    {
+      "date": "2026-03",
+      "value": 59.8896
+    },
+    {
+      "date": "2026-04",
+      "value": 59.7434
+    },
+    {
+      "date": "2026-05",
+      "value": 58.9064
+    },
+    {
+      "date": "2026-06",
+      "value": 58.4895
+    },
+    {
+      "date": "2026-07",
+      "value": 58.3448
+    },
+    {
+      "date": "2026-08",
+      "value": 58.3331
+    },
+    {
+      "date": "2026-09",
+      "value": 58.9787
+    },
+    {
+      "date": "2026-10",
+      "value": 60.7173
+    }
+  ],
+  "tpmHistory": [
+    {
+      "date": "2025-11",
+      "value": 5.25
+    },
+    {
+      "date": "2025-12",
+      "value": 5.25
+    },
+    {
+      "date": "2026-01",
+      "value": 5.25
+    },
+    {
+      "date": "2026-02",
+      "value": 5.25
+    },
+    {
+      "date": "2026-03",
+      "value": 5.25
+    },
+    {
+      "date": "2026-04",
+      "value": 5.25
+    },
+    {
+      "date": "2026-05",
+      "value": 5.25
+    },
+    {
+      "date": "2026-06",
+      "value": 5.25
+    },
+    {
+      "date": "2026-07",
+      "value": 5.25
+    },
+    {
+      "date": "2026-08",
+      "value": 5.25
+    },
+    {
+      "date": "2026-09",
+      "value": 5.5
+    },
+    {
+      "date": "2026-10",
+      "value": 5.5
+    }
+  ],
+  "decisions": [
+    {
+      "date": "2026-10-30",
+      "action": "Mantiene",
+      "rate": 5.5,
+      "note": "TPM sin cambios; repos a 1 día en 6.00% y depósitos overnight en 4.75%."
+    },
+    {
+      "date": "2026-09-30",
+      "action": "Alza +25 pb",
+      "rate": 5.5,
+      "note": "Primer aumento desde 2025, de 5.25% a 5.50%, ante mayores riesgos inflacionarios."
+    },
+    {
+      "date": "2026-08-31",
+      "action": "Mantiene",
+      "rate": 5.25,
+      "note": "Sin cambios ante la incertidumbre del entorno internacional."
+    },
+    {
+      "date": "2026-07-31",
+      "action": "Mantiene",
+      "rate": 5.25,
+      "note": "Tasa sin cambios; inflación interanual de 5.67% en junio."
+    },
+    {
+      "date": "2026-05-29",
+      "action": "Mantiene",
+      "rate": 5.25,
+      "note": "Tasa sin cambios en 5.25% anual."
+    }
+  ],
+  "links": [
+    {
+      "label": "BCRD — Mercado cambiario (tasas spot)",
+      "url": "https://www.bancentral.gov.do/a/d/2537-mercado-cambiario"
+    },
+    {
+      "label": "DGII — Tasa de cambio del dólar, serie mensual 2026 (fuente BCRD)",
+      "url": "https://www.dgii.gov.do/estadisticas/tasaCambio/1Dlar/Dolar2026.pdf"
+    },
+    {
+      "label": "BCRD — Inicio (política monetaria e IPC)",
+      "url": "https://www.bancentral.gov.do/"
+    }
+  ]
+}

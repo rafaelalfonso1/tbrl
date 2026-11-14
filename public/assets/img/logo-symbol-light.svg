@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 20 360 460" role="img" aria-label="The Business Research Lab">
+  <defs><linearGradient id="pour" gradientUnits="userSpaceOnUse" x1="30" y1="0" x2="300" y2="0"><stop offset="0" stop-color="#E2A38D"/><stop offset=".3" stop-color="#D98F6C"/><stop offset="1" stop-color="#F7F4EB"/></linearGradient></defs>
+  <path d="M283 90 L330 43 H24 L163 230 L52 356" fill="none" stroke="#F7F4EB" stroke-width="30" stroke-miterlimit="10"/>
+  <path d="M30 404 C 34 376, 54 355, 92 355 H 306" fill="none" stroke="url(#pour)" stroke-width="24"/>
+  <path d="M296 152 C 296 112, 262 98, 230 98 C 186 98, 156 126, 156 164 C 156 198, 180 222, 204 246 L 318 360 C 352 394, 344 456, 290 456 H 78 C 40 456, 26 430, 30 400" fill="none" stroke="#C15C28" stroke-width="28"/>
+</svg>

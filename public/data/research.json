@@ -1,0 +1,116 @@
+{
+  "studies": [
+    {
+      "id": "wp-optimizacion-contact-center",
+      "type": "Artículo de investigación",
+      "title": "Métodos de optimización de centros de contacto mediante análisis cuantitativo",
+      "category": "Contact center",
+      "date": "2026-11-01",
+      "pages": 8,
+      "author": "Rafael Peña Pelletier, BEc",
+      "summary": "Marco integrado que conecta pronósticos probabilísticos de demanda (ARIMA, SARIMA, VAR, modelos de conteo y machine learning), teoría de colas (Erlang C y A) y programación entera de turnos, con hipótesis, diseño experimental y métricas operativas para su validación.",
+      "access": "free",
+      "price": 0,
+      "downloadUrl": "downloads/paper-optimizacion-contact-center.pdf",
+      "checkoutUrl": "",
+      "tags": [
+        "series temporales",
+        "teoría de colas",
+        "Erlang",
+        "programación entera",
+        "pronóstico probabilístico",
+        "investigación de operaciones"
+      ],
+      "featured": true
+    },
+    {
+      "id": "dop-outlook-2027",
+      "title": "Perspectivas del peso dominicano 2027: escenarios USD/DOP",
+      "category": "Tasa de cambio",
+      "date": "2026-12-01",
+      "pages": 32,
+      "summary": "Escenarios base, optimista y de estrés para el peso, construidos con remesas, ingresos por turismo, demanda de importaciones y diferenciales de tasas.",
+      "access": "paid",
+      "price": 79,
+      "downloadUrl": "",
+      "checkoutUrl": "",
+      "tags": [
+        "tipo de cambio",
+        "macroeconomía",
+        "escenarios"
+      ],
+      "featured": true
+    },
+    {
+      "id": "tpm-transmission",
+      "title": "Transmisión de la política monetaria: de la TPM a las tasas de préstamos",
+      "category": "Política monetaria",
+      "date": "2026-12-15",
+      "pages": 24,
+      "summary": "Medimos el rezago y el traspaso entre los movimientos de la tasa del BCRD y las tasas activas y pasivas de la banca múltiple.",
+      "access": "paid",
+      "price": 59,
+      "downloadUrl": "",
+      "checkoutUrl": "",
+      "tags": [
+        "tasas de interés",
+        "banca",
+        "econometría"
+      ],
+      "featured": true
+    },
+    {
+      "id": "nearshore-cc-benchmark",
+      "title": "Benchmark de contact centers nearshore en el Caribe",
+      "category": "Contact center",
+      "date": "2027-01-15",
+      "pages": 40,
+      "summary": "Referencias de nivel de servicio, AHT, rotación y calidad en operaciones nearshore, y los factores que distinguen al cuartil superior.",
+      "access": "paid",
+      "price": 149,
+      "downloadUrl": "",
+      "checkoutUrl": "",
+      "tags": [
+        "benchmarking",
+        "operaciones",
+        "calidad"
+      ],
+      "featured": false
+    },
+    {
+      "id": "bi-maturity-dr",
+      "title": "Madurez de inteligencia de negocios en empresas dominicanas",
+      "category": "Inteligencia de negocios",
+      "date": "2027-02-01",
+      "pages": 28,
+      "summary": "Dónde están las empresas en la curva de madurez de datos, qué las frena y qué inversiones rinden primero.",
+      "access": "paid",
+      "price": 49,
+      "downloadUrl": "",
+      "checkoutUrl": "",
+      "tags": [
+        "encuesta",
+        "estrategia de datos",
+        "dashboards"
+      ],
+      "featured": false
+    },
+    {
+      "id": "predictive-churn-playbook",
+      "title": "Guía de modelos predictivos de abandono (churn)",
+      "category": "Modelos predictivos",
+      "date": "2027-02-20",
+      "pages": 18,
+      "summary": "Un marco paso a paso para construir, validar y poner en operación modelos de churn con resultados explicables.",
+      "access": "paid",
+      "price": 39,
+      "downloadUrl": "",
+      "checkoutUrl": "",
+      "tags": [
+        "machine learning",
+        "analítica de clientes"
+      ],
+      "featured": false
+    }
+  ]
+}

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es-DO">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Biblioteca de investigación — The Business Research Lab</title>
+  <meta name="description" content="Estudios gratuitos y premium sobre la economía dominicana, el tipo de cambio, la política monetaria, los contact centers y la analítica aplicada.">
+  <meta name="theme-color" content="#2C4856">
+  <link rel="canonical" href="https://thebusinessresearchlab.com/investigacion.html">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_DO">
+  <meta property="og:site_name" content="The Business Research Lab">
+  <meta property="og:title" content="Biblioteca de investigación — The Business Research Lab">
+  <meta property="og:description" content="Estudios gratuitos y premium sobre la economía dominicana, el tipo de cambio, la política monetaria, los contact centers y la analítica aplicada.">
+  <meta property="og:image" content="https://thebusinessresearchlab.com/assets/img/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="preload" href="assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Saltar al contenido</a>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="The Business Research Lab — inicio">
+      <img src="assets/img/logo-symbol.svg" alt="" width="30" height="38">
+      <span class="brand-text"><small>THE BUSINESS</small><strong>RESEARCH</strong><strong>LAB</strong></span>
+    </a>
+    <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="site-nav"><span></span></button>
+    <nav class="nav" id="site-nav" aria-label="Principal">
+      <a href="index.html#servicios">Servicios</a>
+      <a href="investigacion.html" aria-current="page">Investigación</a>
+      <a href="mercados.html">Inteligencia de mercado</a>
+      <a href="datos.html">Datos</a>
+      <a href="index.html#membresias">Membresías</a>
+      <a href="index.html#nosotros">Nosotros</a>
+      <a class="btn btn--primary btn--sm" href="index.html#contacto">Contacto</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<section class="page-hero" data-lines>
+  <div class="wrap">
+    <span class="eyebrow">Biblioteca de investigación</span>
+    <h1>Investigación para tomar decisiones</h1>
+    <p class="lead">Estudios y datos originales sobre la economía dominicana, el tipo de cambio, la política monetaria, el desempeño de contact centers y la analítica aplicada. Descarga informes gratuitos o compra estudios premium al instante.</p>
+  </div>
+</section>
+<section class="section" style="padding-top:56px">
+  <div class="wrap">
+    <div class="toolbar">
+      <div class="filters" data-research-filters role="group" aria-label="Filtrar por tema"></div>
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <label class="hp" for="research-search">Buscar estudios</label>
+        <input id="research-search" type="search" placeholder="Buscar estudios…" data-research-search>
+      </div>
+    </div>
+    <div class="research-grid" data-research-list></div>
+  </div>
+</section>
+<section class="section section--paper">
+  <div class="wrap">
+    <div class="cta-band reveal">
+      <div>
+        <h2>¿Necesitas investigación sobre tu propio mercado?</h2>
+        <p>Diseñamos estudios a la medida (encuestas, benchmarks y análisis econométrico) y te entregamos los datos y la metodología completos.</p>
+      </div>
+      <a class="btn btn--primary" href="index.html#contacto">Encargar un estudio</a>
+    </div>
+  </div>
+</section>
+</main>
+<div class="modal" id="download-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="download-h">
+  <div class="modal__backdrop" data-close-modal></div>
+  <div class="modal__dialog">
+    <button class="modal__close" data-close-modal aria-label="Cerrar">×</button>
+    <span class="eyebrow">Descarga gratis</span>
+    <h3 id="download-h">«<span id="download-title"></span>»</h3>
+    <p class="lead" style="font-size:1rem">Dinos a dónde enviarte nuevas investigaciones y tu descarga comenzará de inmediato.</p>
+    <form id="download-form" class="js-ajax" name="free-download" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="free-download">
+      <input type="hidden" name="study" value="">
+      <p class="hp"><label>No llenar <input name="bot-field"></label></p>
+      <div class="form-grid">
+        <div class="field"><label for="dl-name">Nombre</label><input id="dl-name" name="name" required autocomplete="name"></div>
+        <div class="field"><label for="dl-company">Empresa</label><input id="dl-company" name="company" autocomplete="organization"></div>
+        <div class="field full"><label for="dl-email">Correo de trabajo</label><input id="dl-email" type="email" name="email" required autocomplete="email"></div>
+      </div>
+      <button class="btn btn--primary btn--block" type="submit" style="margin-top:18px">Descargar ahora</button>
+      <p class="form-note">También te suscribiremos al Monthly Pulse gratuito. Puedes darte de baja cuando quieras.</p>
+      <p class="form-status" role="status"></p>
+    </form>
+  </div>
+</div>
+<div class="modal" id="notify-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="notify-h">
+  <div class="modal__backdrop" data-close-modal></div>
+  <div class="modal__dialog">
+    <button class="modal__close" data-close-modal aria-label="Cerrar">×</button>
+    <span class="eyebrow">Estudio premium</span>
+    <h3 id="notify-h">«<span id="notify-title"></span>»</h3>
+    <p class="lead" style="font-size:1rem">Sé el primero en saber cuándo se publique. Los suscriptores reciben precio de lanzamiento.</p>
+    <form id="notify-form" class="js-ajax" name="study-waitlist" method="POST" data-netlify="true" netlify-honeypot="bot-field" data-success="¡Estás en la lista! Te escribiremos en cuanto esté disponible.">
+      <input type="hidden" name="form-name" value="study-waitlist">
+      <input type="hidden" name="study" value="">
+      <p class="hp"><label>No llenar <input name="bot-field"></label></p>
+      <div class="form-grid">
+        <div class="field"><label for="nt-name">Nombre</label><input id="nt-name" name="name" required autocomplete="name"></div>
+        <div class="field"><label for="nt-email">Correo de trabajo</label><input id="nt-email" type="email" name="email" required autocomplete="email"></div>
+      </div>
+      <button class="btn btn--primary btn--block" type="submit" style="margin-top:18px">Avísame</button>
+      <p class="form-status" role="status"></p>
+    </form>
+  </div>
+</div>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a class="brand" href="index.html" aria-label="The Business Research Lab — inicio">
+          <img src="assets/img/logo-symbol-light.svg" alt="" width="30" height="38">
+          <span class="brand-text"><small>THE BUSINESS</small><strong>RESEARCH</strong><strong>LAB</strong></span>
+        </a>
+        <p>Convertimos los datos económicos y operativos dominicanos en decisiones. Cada cifra lleva su fuente.</p>
+      </div>
+      <div>
+        <h4>Explora</h4>
+        <ul>
+          <li><a href="index.html#servicios">Servicios</a></li>
+          <li><a href="investigacion.html">Biblioteca de investigación</a></li>
+          <li><a href="mercados.html">Inteligencia de mercado</a></li>
+          <li><a href="datos.html">Centro de datos</a></li>
+          <li><a href="index.html#membresias">Membresías</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contacto</h4>
+        <ul>
+          <li><a data-cfg-email href="#"></a></li>
+          <li data-cfg-wrap><a data-cfg-phone href="#"></a></li>
+          <li data-cfg-wrap><a data-cfg-linkedin href="#" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><span data-cfg-location></span></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Monthly Pulse</h4>
+        <p>Recibe gratis el Monthly Pulse: el peso, las tasas y la economía dominicana, cada mes.</p>
+        <form class="js-ajax" name="newsletter" method="POST" data-netlify="true" netlify-honeypot="bot-field" data-success="¡Listo! Ya estás suscrito al Monthly Pulse.">
+          <input type="hidden" name="form-name" value="newsletter">
+          <p class="hp"><label>No llenar <input name="bot-field"></label></p>
+          <div class="newsletter">
+            <label class="hp" for="nl-email-investigacion">Correo</label>
+            <input id="nl-email-investigacion" type="email" name="email" placeholder="tu@empresa.com" required autocomplete="email">
+            <button class="btn btn--primary btn--sm" type="submit">Suscribirme</button>
+          </div>
+          <p class="form-status" role="status"></p>
+        </form>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span data-year></span> The Business Research Lab. Todos los derechos reservados.</span>
+      <span>RESEARCH · ANALYTICS · STRATEGY · IMPACT</span>
+    </div>
+  </div>
+</footer>
+<script src="js/config.js"></script>
+<script src="js/main.js" defer></script>
+</body>
+</html>
