@@ -185,6 +185,13 @@
           form.reset();
         })
         .catch(() => {
+          // Si el registro del formulario falla, la descarga gratuita se entrega igual (el visitante nunca se queda sin el archivo)
+          const dlFail = form.dataset.download;
+          if (dlFail) {
+            const a = document.createElement("a"); a.href = dlFail; a.download = ""; document.body.appendChild(a); a.click(); a.remove();
+            if (status) { status.className = "form-status is-ok"; status.innerHTML = `Tu descarga comenzó. Si no inicia, <a href="${esc(dlFail)}" download>haz clic aquí</a>.`; }
+            return;
+          }
           if (status) {
             status.className = "form-status is-err";
             status.textContent = /claude|localhost|127\.0\.0\.1/.test(location.hostname)
