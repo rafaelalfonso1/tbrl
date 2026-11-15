@@ -498,3 +498,18 @@ textarea { resize: vertical; min-height: 130px; }
 @media (max-width: 1080px) and (min-width: 901px) {
   .nav a:not(.btn) { padding: 8px 9px; font-size: .9rem; }
 }
+
+/* ---------- Mercado inmobiliario (centro de datos) ---------- */
+.inmo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; margin-top: 8px; }
+.inmo-grid h4 { margin: 0 0 2px; font-size: 1rem; color: var(--slate); }
+.inmo-grid p.sub { margin: 0 0 12px; font-size: .82rem; color: var(--ink-3); }
+.hbars { width: 100%; }
+.hbars svg { width: 100%; height: 100%; overflow: visible; }
+.hbar__lbl { font: 500 12.5px var(--font-body); fill: var(--ink); }
+.hbar__n { fill: var(--ink-3); font-weight: 400; }
+.hbar__val { font: 700 12.5px var(--font-body); fill: var(--slate); font-variant-numeric: tabular-nums; }
+.hbar:hover rect[rx] { opacity: .85; }
+.legend-inline { display: flex; gap: 16px; flex-wrap: wrap; font-size: .78rem; color: var(--ink-3); margin-top: 6px; }
+.legend-inline i { display: inline-block; width: 18px; height: 2px; background: #7FA0B0; vertical-align: middle; margin-right: 6px; }
+.inmo-note { font-size: .82rem; color: var(--ink-3); margin: 16px 0 0; }
+@media (max-width: 900px) { .inmo-grid { grid-template-columns: 1fr; } }

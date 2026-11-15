@@ -1,0 +1,145 @@
+{
+ "titulo": "Muestra de anuncios de apartamentos en siete sectores del Distrito Nacional",
+ "periodo": "abril–noviembre 2026",
+ "fuentes": "Encuentra24 y CLIC Inmobiliaria (anuncios publicados)",
+ "n_total": 140,
+ "n_venta": 89,
+ "n_alquiler": 51,
+ "usd_m2_mediana_total": 2154,
+ "renta_mediana_total": 1250,
+ "venta": [
+  {
+   "sector": "Mirador Norte",
+   "n": 7,
+   "precio_mediano": 293650,
+   "usd_m2_mediana": 2327,
+   "usd_m2_p25": 1861,
+   "usd_m2_p75": 2506,
+   "n_m2": 7
+  },
+  {
+   "sector": "Mirador Sur",
+   "n": 4,
+   "precio_mediano": 296175,
+   "usd_m2_mediana": 2323,
+   "usd_m2_p25": 2139,
+   "usd_m2_p75": 2435,
+   "n_m2": 4
+  },
+  {
+   "sector": "El Millón",
+   "n": 20,
+   "precio_mediano": 209000,
+   "usd_m2_mediana": 2266,
+   "usd_m2_p25": 2008,
+   "usd_m2_p75": 2529,
+   "n_m2": 20
+  },
+  {
+   "sector": "Los Cacicazgos",
+   "n": 18,
+   "precio_mediano": 660000,
+   "usd_m2_mediana": 2191,
+   "usd_m2_p25": 1835,
+   "usd_m2_p75": 2643,
+   "n_m2": 18
+  },
+  {
+   "sector": "Los Prados",
+   "n": 5,
+   "precio_mediano": 285000,
+   "usd_m2_mediana": 2159,
+   "usd_m2_p25": 1998,
+   "usd_m2_p75": 2440,
+   "n_m2": 5
+  },
+  {
+   "sector": "Renacimiento",
+   "n": 8,
+   "precio_mediano": 212905,
+   "usd_m2_mediana": 2078,
+   "usd_m2_p25": 1753,
+   "usd_m2_p75": 2153,
+   "n_m2": 8
+  },
+  {
+   "sector": "Evaristo Morales",
+   "n": 27,
+   "precio_mediano": 270000,
+   "usd_m2_mediana": 1972,
+   "usd_m2_p25": 1579,
+   "usd_m2_p75": 2480,
+   "n_m2": 27
+  }
+ ],
+ "alquiler": [
+  {
+   "sector": "Los Cacicazgos",
+   "n": 9,
+   "precio_mediano": 4000,
+   "usd_m2_mediana": 17,
+   "usd_m2_p25": 15,
+   "usd_m2_p75": 17,
+   "n_m2": 5
+  },
+  {
+   "sector": "Mirador Norte",
+   "n": 3,
+   "precio_mediano": 1600,
+   "usd_m2_mediana": 13,
+   "usd_m2_p25": 11,
+   "usd_m2_p75": 14,
+   "n_m2": 3
+  },
+  {
+   "sector": "Mirador Sur",
+   "n": 5,
+   "precio_mediano": 1400,
+   "usd_m2_mediana": 12,
+   "usd_m2_p25": 10,
+   "usd_m2_p75": 14,
+   "n_m2": 4
+  },
+  {
+   "sector": "El Millón",
+   "n": 5,
+   "precio_mediano": 1300,
+   "usd_m2_mediana": 12,
+   "usd_m2_p25": 9,
+   "usd_m2_p75": 15,
+   "n_m2": 2
+  },
+  {
+   "sector": "Evaristo Morales",
+   "n": 23,
+   "precio_mediano": 1200,
+   "usd_m2_mediana": 15,
+   "usd_m2_p25": 13,
+   "usd_m2_p75": 17,
+   "n_m2": 13
+  },
+  {
+   "sector": "Renacimiento",
+   "n": 4,
+   "precio_mediano": 1150,
+   "usd_m2_mediana": 14,
+   "usd_m2_p25": 12,
+   "usd_m2_p75": 17,
+   "n_m2": 2
+  },
+  {
+   "sector": "Los Prados",
+   "n": 2,
+   "precio_mediano": 1050,
+   "usd_m2_mediana": 8,
+   "usd_m2_p25": 8,
+   "usd_m2_p75": 8,
+   "n_m2": 1
+  }
+ ],
+ "descargas": {
+  "csv": "data/inmobiliario/tbrl_muestra_anuncios_inmobiliarios_nov2026.csv",
+  "xlsx": "data/inmobiliario/tbrl_muestra_anuncios_inmobiliarios_nov2026.xlsx"
+ },
+ "paper": "downloads/tbrl-salud-inversion-residencial-gsd-nov2026.pdf"
+}

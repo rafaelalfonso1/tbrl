@@ -135,6 +135,14 @@
 
   /* ---------- Helpers ---------- */
   const fetchJSON = url => fetch(url, { cache: "no-cache" }).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
+  // Datos en vivo: si existe data/origen.json (lo crea la automatización cuando el repositorio de GitHub es público),
+  // los datos de mercado se leen directo de GitHub, sin necesidad de redesplegar en Netlify. Si falla, se usa la copia local.
+  let origenP = null;
+  const origen = () => origenP || (origenP = fetch("data/origen.json", { cache: "no-cache" })
+    .then(r => (r.ok ? r.json() : {})).then(o => (o && o.base) || "").catch(() => ""));
+  const fetchData = path => origen().then(base => base
+    ? fetchJSON(base + path).then(d => ({ d, base })).catch(() => fetchJSON(path).then(d => ({ d, base: "" })))
+    : fetchJSON(path).then(d => ({ d, base: "" })));
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const fmtDate = (iso, opts = { month: "short", year: "numeric" }) => {
     const [y, m, d] = iso.split("-").map(Number);
@@ -217,7 +225,7 @@
           <span class="study__cover-cat">${esc(s.type || "Estudio")} · ${s.date.slice(0, 4)} · ${esc(s.category)}</span>
         </div>
         <div class="study__body">
-          <div class="study__meta"><span>${fmtDate(s.date)}</span><span>${s.pages} páginas</span>${s.author ? `<span>Por ${esc(s.author)}</span>` : ""}</div>
+          <div class="study__meta"><span>${fmtDate(s.date)}</span><span>${s.pages ? s.pages + " páginas" : s.records ? s.records + " registros" : ""}</span>${s.author ? `<span>Por ${esc(s.author)}</span>` : ""}</div>
           <h3>${esc(s.title)}</h3>
           <p>${esc(s.summary)}</p>
           <div class="study__foot">${price}${action}</div>
@@ -228,7 +236,13 @@
   const lists = $$("[data-research-list]");
   if (lists.length) {
     fetchJSON("data/research.json").then(({ studies }) => {
-      studies.sort((a, b) => (b.featured - a.featured) || a.date.localeCompare(b.date));
+      // destacados primero; luego disponibles (más recientes primero) y al final los próximos (más cercanos primero)
+      studies.sort((a, b) => {
+        if (!!b.featured !== !!a.featured) return b.featured ? 1 : -1;
+        const fa = isFuture(a.date), fb = isFuture(b.date);
+        if (fa !== fb) return fa ? 1 : -1;
+        return fa ? a.date.localeCompare(b.date) : b.date.localeCompare(a.date);
+      });
       const byId = Object.fromEntries(studies.map(s => [s.id, s]));
 
       lists.forEach(list => {
@@ -372,11 +386,12 @@
   /* ---------- Centro de datos ---------- */
   const datosRoot = $("[data-datos]");
   if (datosRoot) {
-    fetchJSON("data/macro/series.json").then(D => {
+    fetchData("data/macro/series.json").then(({ d: D, base }) => {
+      const B = p => base + p;
       $$("[data-datos-updated]").forEach(el => (el.textContent = fmtDate(D.actualizado, { day: "numeric", month: "long", year: "numeric" })));
-      $$("[data-dl-all-xlsx]").forEach(a => (a.href = D.descargas.xlsx));
-      $$("[data-dl-all-csv]").forEach(a => (a.href = D.descargas.csv));
-      $$("[data-dl-daily]").forEach(a => (a.href = D.descargas.diario_csv));
+      $$("[data-dl-all-xlsx]").forEach(a => (a.href = B(D.descargas.xlsx)));
+      $$("[data-dl-all-csv]").forEach(a => (a.href = B(D.descargas.csv)));
+      $$("[data-dl-daily]").forEach(a => (a.href = B(D.descargas.diario_csv)));
       if (D.series.some(s => s.frecuencia === "Semanal")) $$("[data-weekly-note]").forEach(el => el.remove());
       const ranges = [["1A", 1], ["3A", 3], ["5A", 5], ["Todo", 0]];
       datosRoot.innerHTML = D.series.map((s, k) => `
@@ -388,8 +403,8 @@
               <p>${esc(s.descripcion)}</p>
             </div>
             <div class="dataset__dl">
-              <a class="btn btn--ghost btn--sm" href="${esc(s.descargas.csv)}" download>CSV</a>
-              <a class="btn btn--slate btn--sm" href="${esc(s.descargas.xlsx)}" download>Excel</a>
+              <a class="btn btn--ghost btn--sm" href="${esc(B(s.descargas.csv))}" download>CSV</a>
+              <a class="btn btn--slate btn--sm" href="${esc(B(s.descargas.xlsx))}" download>Excel</a>
             </div>
           </div>
           <div class="dataset__kpis" data-kpis></div>
@@ -459,10 +474,60 @@
     }).catch(() => (datosRoot.innerHTML = '<p class="empty">No se pudieron cargar los datos. Recarga la página.</p>'));
   }
 
+  /* ---------- Barras horizontales (una serie, rango P25–P75 opcional) ---------- */
+  function hbars(el, items, { fmt = v => v, label = "" } = {}) {
+    const draw = () => {
+      const W = el.clientWidth, rowH = 34, m = { t: 6, r: 70, b: 6, l: Math.min(190, W * 0.42) };
+      const H = m.t + m.b + rowH * items.length;
+      const iw = W - m.l - m.r;
+      const max = Math.max(...items.map(d => Math.max(d.value, d.hi || 0))) * 1.05;
+      const x = v => m.l + (v / max) * iw;
+      el.style.height = H + "px";
+      el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(label)}">
+        ${items.map((d, i) => {
+          const y = m.t + i * rowH, cy = y + rowH / 2;
+          return `<g class="hbar">
+            <title>${esc(d.label)}: ${fmt(d.value)}${d.lo != null ? ` (P25–P75: ${fmt(d.lo)}–${fmt(d.hi)})` : ""} · ${d.n} anuncios</title>
+            <rect x="0" y="${y}" width="${W}" height="${rowH}" fill="transparent"/>
+            <text x="${m.l - 10}" y="${cy + 4}" text-anchor="end" class="hbar__lbl">${esc(d.label)} <tspan class="hbar__n">(${d.n})</tspan></text>
+            <rect x="${m.l}" y="${cy - 8}" width="${Math.max(2, x(d.value) - m.l)}" height="16" rx="4" fill="${d.color || "#2C4856"}"/>
+            ${d.lo != null ? `<line x1="${x(d.lo)}" x2="${x(d.hi)}" y1="${cy}" y2="${cy}" stroke="#7FA0B0" stroke-width="2"/>
+              <line x1="${x(d.lo)}" x2="${x(d.lo)}" y1="${cy - 5}" y2="${cy + 5}" stroke="#7FA0B0" stroke-width="2"/>
+              <line x1="${x(d.hi)}" x2="${x(d.hi)}" y1="${cy - 5}" y2="${cy + 5}" stroke="#7FA0B0" stroke-width="2"/>` : ""}
+            <text x="${x(Math.max(d.value, d.hi || 0)) + 8}" y="${cy + 4}" class="hbar__val">${fmt(d.value)}</text>
+          </g>`;
+        }).join("")}
+      </svg>`;
+    };
+    draw();
+    let rt; window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(draw, 120); });
+  }
+
+  /* ---------- Centro de datos: mercado inmobiliario ---------- */
+  const inmo = $("[data-inmo]");
+  if (inmo) {
+    fetchJSON("data/inmobiliario/resumen.json").then(R => {
+      const usd = v => "US$" + Math.round(v).toLocaleString("en-US");
+      inmo.querySelector("[data-inmo-kpis]").innerHTML = `
+        <div><span>Anuncios</span><strong>${R.n_total}</strong></div>
+        <div><span>Venta / alquiler</span><strong>${R.n_venta} / ${R.n_alquiler}</strong></div>
+        <div><span>US$/m² mediana (venta)</span><strong>${usd(R.usd_m2_mediana_total)}</strong></div>
+        <div><span>Renta mediana mensual</span><strong>${usd(R.renta_mediana_total)}</strong></div>`;
+      $$("[data-inmo-csv]").forEach(a => (a.href = R.descargas.csv));
+      $$("[data-inmo-xlsx]").forEach(a => (a.href = R.descargas.xlsx));
+      hbars(inmo.querySelector("[data-inmo-m2]"),
+        R.venta.filter(v => v.usd_m2_mediana).map(v => ({ label: v.sector, value: v.usd_m2_mediana, lo: v.usd_m2_p25, hi: v.usd_m2_p75, n: v.n })),
+        { fmt: usd, label: "Precio mediano por metro cuadrado de venta por sector" });
+      hbars(inmo.querySelector("[data-inmo-rent]"),
+        R.alquiler.map(a => ({ label: a.sector, value: a.precio_mediano, n: a.n, color: "#B35231" })),
+        { fmt: usd, label: "Renta mensual mediana por sector" });
+    }).catch(() => { inmo.querySelector("[data-inmo-kpis]").innerHTML = '<p class="empty">No se pudieron cargar los datos.</p>'; });
+  }
+
   /* ---------- Market intelligence ---------- */
   const needsMarkets = $("[data-markets]");
   if (needsMarkets) {
-    fetchJSON("data/markets.json").then(M => {
+    fetchData("data/markets.json").then(({ d: M }) => {
       const set = (sel, v) => $$(sel).forEach(el => (el.textContent = v));
       const mid = (M.fx.buy + M.fx.sell) / 2;
       set("[data-fx-buy]", M.fx.buy.toFixed(2));

@@ -1,6 +1,72 @@
 {
   "studies": [
     {
+      "id": "salud-inversion-residencial-gsd",
+      "type": "Documento de investigación",
+      "title": "Salud de la inversión residencial en el Gran Santo Domingo: precios por metro cuadrado, rentas y el costo real de comprar en planos",
+      "category": "Mercado inmobiliario",
+      "date": "2026-11-15",
+      "pages": 8,
+      "author": "Rafael A. Peña Pelletier, BEc, PGDAST",
+      "summary": "Rendimientos de alquiler, prima de la obra en construcción y TIR de la compra en planos por sector. En el Polígono Central el rendimiento neto (4.9–5.3%) queda por debajo de la tasa pasiva, y comprar en planos exige al menos 7.8% de plusvalía en 24 meses para igualar un depósito.",
+      "access": "free",
+      "price": 0,
+      "downloadUrl": "downloads/tbrl-salud-inversion-residencial-gsd-nov2026.pdf",
+      "checkoutUrl": "",
+      "tags": [
+        "mercado inmobiliario",
+        "rendimiento de alquiler",
+        "precio por metro cuadrado",
+        "preventa",
+        "Santo Domingo"
+      ],
+      "featured": true
+    },
+    {
+      "id": "muestra-anuncios-inmobiliarios-nov2026",
+      "type": "Dataset",
+      "title": "Muestra de anuncios de apartamentos: siete sectores del Distrito Nacional (nov. 2026)",
+      "category": "Mercado inmobiliario",
+      "date": "2026-11-15",
+      "records": 140,
+      "author": "The Business Research Lab",
+      "summary": "Los 140 anuncios (89 de venta y 51 de alquiler) de Evaristo Morales, Mirador Norte, Mirador Sur, Los Cacicazgos, Renacimiento, Los Prados y El Millón usados en el estudio de salud de la inversión residencial. CSV con precio, área, US$/m², estado y portal.",
+      "access": "free",
+      "price": 0,
+      "downloadUrl": "data/inmobiliario/tbrl_muestra_anuncios_inmobiliarios_nov2026.csv",
+      "checkoutUrl": "",
+      "tags": [
+        "datos abiertos",
+        "anuncios",
+        "alquiler",
+        "venta",
+        "Distrito Nacional"
+      ],
+      "featured": true
+    },
+    {
+      "id": "modelado-predictivo-incertidumbre-tarifas",
+      "type": "Documento de investigación",
+      "title": "Modelado predictivo bajo incertidumbre: shocks, variabilidad estocástica y error de estimación. Evidencia del índice de tarifas aéreas de EE. UU., 1989–2026",
+      "category": "Modelos predictivos",
+      "date": "2026-11-15",
+      "pages": 16,
+      "author": "Rafael A. Peña Pelletier, BEc, PGDAST",
+      "summary": "Cómo tratar las tres fuentes de incertidumbre de un pronóstico, con 453 meses de datos. Un GARCH con innovaciones t reduce el CRPS 16% y eleva la cobertura de sus intervalos en crisis de 61% a 84%; ignorar los quiebres estructurales infla la persistencia de la volatilidad.",
+      "access": "free",
+      "price": 0,
+      "downloadUrl": "downloads/tbrl-modelado-predictivo-incertidumbre-tarifas-aereas.pdf",
+      "checkoutUrl": "",
+      "tags": [
+        "GARCH",
+        "cambio de régimen",
+        "predicción conformal",
+        "quiebres estructurales",
+        "pronóstico probabilístico"
+      ],
+      "featured": true
+    },
+    {
       "id": "wp-optimizacion-contact-center",
       "type": "Artículo de investigación",
       "title": "Métodos de optimización de centros de contacto mediante análisis cuantitativo",

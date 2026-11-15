@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Centro de datos macroeconómicos de República Dominicana | The Business Research Lab</title>
-  <meta name="description" content="Series históricas del tipo de cambio USD/DOP, la tasa de política monetaria y la inflación en República Dominicana. Dashboards interactivos y descarga gratuita en CSV y Excel.">
+  <meta name="description" content="Series históricas del tipo de cambio USD/DOP, la tasa de política monetaria y la inflación, y datos del mercado inmobiliario de Santo Domingo. Dashboards interactivos y descarga gratuita en CSV y Excel.">
   <meta name="theme-color" content="#2C4856">
   <link rel="canonical" href="https://thebusinessresearchlab.com/datos.html">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="es_DO">
   <meta property="og:site_name" content="The Business Research Lab">
   <meta property="og:title" content="Centro de datos macroeconómicos de República Dominicana | The Business Research Lab">
-  <meta property="og:description" content="Series históricas del tipo de cambio USD/DOP, la tasa de política monetaria y la inflación en República Dominicana. Dashboards interactivos y descarga gratuita en CSV y Excel.">
+  <meta property="og:description" content="Series históricas del tipo de cambio USD/DOP, la tasa de política monetaria y la inflación, y datos del mercado inmobiliario de Santo Domingo. Dashboards interactivos y descarga gratuita en CSV y Excel.">
   <meta property="og:image" content="https://thebusinessresearchlab.com/assets/img/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -44,8 +44,8 @@
 <section class="page-hero" data-lines>
   <div class="wrap">
     <span class="eyebrow">Centro de datos</span>
-    <h1>Datos macroeconómicos de República Dominicana</h1>
-    <p class="lead">Series históricas oficiales, actualizadas automáticamente y listas para analizar. Explora los dashboards o descarga los datos completos en CSV o Excel, gratis.</p>
+    <h1>Datos económicos de República Dominicana</h1>
+    <p class="lead">Series macroeconómicas oficiales, actualizadas automáticamente, y conjuntos de datos propios de nuestras investigaciones. Explora los dashboards o descarga los datos en CSV o Excel, gratis.</p>
     <div class="data-hero-actions">
       <a class="btn btn--primary" href="#" data-dl-all-xlsx download>Descargar todo en Excel</a>
       <a class="btn btn--ghost-light" href="#" data-dl-all-csv download>Descargar todo en CSV</a>
@@ -61,6 +61,36 @@
   <div class="wrap">
     <div class="notice" data-weekly-note style="background:var(--ivory-200);color:var(--ink-2)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg><p>La serie <strong>semanal</strong> del tipo de cambio se genera automáticamente a partir de la tasa diaria del BCRD. Aparecerá aquí después de la primera actualización automática.</p></div>
     <div class="datasets" data-datos></div>
+
+    <article class="panel dataset reveal" id="mercado-inmobiliario" data-inmo style="margin-top:22px">
+      <div class="dataset__head">
+        <div>
+          <span class="eyebrow" style="margin-bottom:6px">Mercado inmobiliario · Distrito Nacional · nov. 2026</span>
+          <h3>Muestra de anuncios de apartamentos en siete sectores</h3>
+          <p>Precios de oferta de venta y alquiler publicados en Encuentra24 y CLIC Inmobiliaria entre abril y noviembre de 2026. Es la base de la sección 4.3 del estudio <a href="investigacion.html">«Salud de la inversión residencial en el Gran Santo Domingo»</a>.</p>
+        </div>
+        <div class="dataset__dl">
+          <a class="btn btn--ghost btn--sm" href="#" data-inmo-csv download>CSV</a>
+          <a class="btn btn--slate btn--sm" href="#" data-inmo-xlsx download>Excel</a>
+        </div>
+      </div>
+      <div class="dataset__kpis" data-inmo-kpis></div>
+      <div class="inmo-grid">
+        <div>
+          <h4>Precio por metro cuadrado (venta)</h4>
+          <p class="sub">Mediana en US$/m² por sector · entre paréntesis, número de anuncios</p>
+          <div class="hbars" data-inmo-m2></div>
+          <div class="legend-inline"><span><i></i>Rango intercuartílico (P25–P75)</span></div>
+        </div>
+        <div>
+          <h4>Renta mensual (alquiler)</h4>
+          <p class="sub">Mediana en US$ por mes por sector · entre paréntesis, número de anuncios</p>
+          <div class="hbars" data-inmo-rent></div>
+        </div>
+      </div>
+      <p class="inmo-note">Son precios de oferta, no de cierre. La muestra mezcla unidades amuebladas y sin amueblar, no elimina posibles duplicados entre portales y algunos sectores tienen pocos anuncios (Mirador Sur, Los Prados, Mirador Norte): interprétalos con cautela.</p>
+      <p class="source">Fuente: anuncios de Encuentra24 y CLIC Inmobiliaria (abr.–nov. 2026) · Elaboración TBRL</p>
+    </article>
     <div class="panel reveal" style="margin-top:22px">
       <h3 style="font-size:1.05rem">Cómo citar y usar estos datos</h3>
       <p style="color:var(--ink-2);font-size:.94rem;margin:6px 0 10px">Puedes usarlos libremente en informes, presentaciones y modelos citando: <strong>«Fuente: BCRD · Elaboración TBRL»</strong>. Los datos se reproducen con fines informativos y no constituyen asesoría de inversión.</p>

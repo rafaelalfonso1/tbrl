@@ -16,10 +16,13 @@ public/                       ← lo que se publica (Netlify sirve esta carpeta)
   data/macro/fuente/          ← FUENTES de datos (ver abajo)
   data/macro/series.json      Generado automáticamente (no editar)
   data/macro/descargas/       CSV y Excel generados automáticamente (no editar)
+  data/inmobiliario/          Dataset inmobiliario (CSV original, Excel y resumen.json)
+  data/origen.json            Lo crea la automatización si el repo es público (no editar)
   downloads/                  PDF gratuitos
 scripts/
   actualizar_datos.py         Descarga las fuentes oficiales (BCRD/DGII) y reconstruye todo
   construir_datos.py          Genera series.json, CSV, Excel y sincroniza markets.json
+  construir_inmobiliario.py   Genera el Excel y el resumen del dataset inmobiliario
 .github/workflows/actualizar-datos.yml   Programación automática
 netlify.toml                  Configuración de Netlify (publica la carpeta public/)
 ```
@@ -37,6 +40,19 @@ netlify.toml                  Configuración de Netlify (publica la carpeta publ
 Desde ahí, de lunes a viernes a las 10:30 a. m. y 4:30 p. m. (hora de Santo Domingo) el sistema descarga la tasa del día del BCRD y la serie de la DGII, regenera los dashboards y las descargas, y Netlify publica la nueva versión sola.
 
 > Si una fuente no responde o cambia de formato, el proceso **no borra nada**: conserva los datos anteriores y deja un aviso en el registro de *Actions*.
+
+## Importante: créditos de Netlify (plan gratuito)
+
+En el plan gratuito de Netlify cada **despliegue a producción consume 15 créditos** de 300 al mes; al agotarse, el sitio se pausa hasta el mes siguiente. Si cada actualización de datos redesplegara el sitio, se acabarían a mitad de mes.
+
+Solución incluida: **haz público el repositorio** (*Settings → General → Danger Zone → Change visibility → Public*). La automatización lo detecta, crea `public/data/origen.json` y desde ese momento:
+- el sitio lee los datos de mercado directo de GitHub (actualizados en ~5 minutos),
+- las actualizaciones de datos se guardan con `[skip netlify]` y **no consumen créditos**,
+- si GitHub no respondiera, el sitio usa automáticamente la última copia publicada.
+
+Hacer público el repositorio no expone nada sensible: todo lo que contiene ya es visible en el propio sitio web (no hay contraseñas ni claves). Si prefieres mantenerlo privado, la alternativa es el plan Personal de Netlify (1,000 créditos/mes) o actualizar con menos frecuencia.
+
+Revisa tu consumo en Netlify → *Billing → Usage*.
 
 ## Qué se actualiza solo y qué no
 
@@ -67,9 +83,36 @@ fecha,tpm,inflacion_interanual
 
 Netlify → *Add new site → Deploy manually* y arrastra la carpeta **`public`**. Los datos quedarán fijos hasta que vuelvas a subirla. Para regenerar los datos a mano: `pip install -r scripts/requirements.txt` y `python scripts/actualizar_datos.py`.
 
-## Formularios
+## Leads de los formularios
 
-En Netlify → *Forms*, activa la detección de formularios. Llegan `contact`, `newsletter`, `free-download` y `study-waitlist`. Configura avisos por correo en *Forms → Notifications*.
+Los formularios **no se guardan en GitHub ni en el sitio**: los recibe y almacena **Netlify Forms**.
+
+- Verlos: Netlify → tu sitio → **Forms**. Hay una lista por formulario: `contact` (contacto), `newsletter` (Monthly Pulse), `free-download` (descargas gratuitas, incluye qué estudio se descargó) y `study-waitlist` (lista de espera de estudios premium).
+- Exportarlos: dentro de cada formulario, **Download as CSV**.
+- Recibirlos por correo: *Project configuration → Notifications → Emails and webhooks → Form submission notifications → Add notification*, con tu correo.
+- Spam: los sospechosos van a la pestaña *Spam*; revísala de vez en cuando.
+- Llevarlos a una hoja o CRM: Zapier o Make (disparador «New form submission» de Netlify → Google Sheets, Mailchimp, HubSpot…).
+- En los planes por créditos los envíos de formularios son gratuitos e ilimitados.
+
+## Cómo actualizar el sitio (contenido, estudios, textos)
+
+1. Recibe el paquete de actualización (zip) y descomprímelo. Contiene **solo los archivos que cambian**, en la misma estructura de carpetas.
+2. En GitHub, abre tu repositorio → **Add file → Upload files**.
+3. Arrastra **todo el contenido** de la carpeta descomprimida (incluida `.github` si viene) a la ventana. GitHub reemplaza los archivos con el mismo nombre y deja intactos los demás (incluidos los datos que se actualizan solos).
+4. Escribe un mensaje (p. ej. «Nuevos estudios inmobiliarios») y pulsa **Commit changes**.
+5. Netlify despliega solo en 1–2 minutos: compruébalo en Netlify → **Deploys** (debe decir *Published*).
+6. Abre el sitio con Ctrl+F5 (Cmd+Shift+R en Mac) para ver la versión nueva sin caché.
+
+Reglas para no romper nada:
+- **Nunca subas** `public/data/markets.json` ni la carpeta `public/data/macro/` desde una copia vieja: los mantiene la automatización.
+- Sube todos los cambios de una vez (un solo *commit* = un solo despliegue = 15 créditos).
+- Cambios pequeños de texto: abre el archivo en GitHub, pulsa el lápiz (**Edit**), corrige y **Commit changes**.
+
+### Agregar un estudio tú mismo
+
+1. Sube el PDF a `public/downloads/` (*Add file → Upload files* dentro de esa carpeta).
+2. Edita `public/data/research.json` y copia un bloque existente: cambia `id`, `title`, `category`, `date`, `pages`, `summary` y `downloadUrl` (`downloads/nombre-del-archivo.pdf`). Para que salga en el inicio, `"featured": true`.
+3. Commit. Los estudios destacados y más recientes aparecen primero.
 
 ## Antes del lanzamiento
 
