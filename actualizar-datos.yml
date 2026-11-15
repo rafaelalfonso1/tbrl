@@ -1,0 +1,83 @@
+name: Actualizar datos de mercado
+
+on:
+  schedule:
+    # Lunes a viernes, 10:30 a. m. y 4:30 p. m. hora de Santo Domingo (UTC-4)
+    - cron: "30 14 * * 1-5"
+    - cron: "30 20 * * 1-5"
+  push:
+    # Si editas a mano un CSV de fuentes (p. ej. TPM o inflación), se reconstruye todo
+    paths:
+      - "public/data/macro/fuente/**"
+      - "scripts/**"
+  workflow_dispatch:
+    inputs:
+      desde:
+        description: "Año inicial para cargar la serie diaria histórica (opcional, ej. 2019)"
+        required: false
+
+permissions:
+  contents: write
+
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar dependencias
+        run: pip install -r scripts/requirements.txt
+
+      - name: Descargar fuentes oficiales y reconstruir datos
+        run: |
+          FILAS=$(wc -l < public/data/macro/fuente/tipo_cambio_diario.csv)
+          if [ -n "${{ github.event.inputs.desde }}" ]; then
+            python scripts/actualizar_datos.py --desde "${{ github.event.inputs.desde }}"
+          elif [ "$FILAS" -lt 200 ]; then
+            echo "Primera ejecución: cargando histórico diario desde 2019"
+            python scripts/actualizar_datos.py --desde 2019
+          else
+            python scripts/actualizar_datos.py
+          fi
+
+      - name: Datos en vivo sin consumir despliegues de Netlify
+        # Si el repositorio es público, el sitio lee los datos directo de GitHub (data/origen.json)
+        # y las actualizaciones de datos no redespliegan Netlify (cada despliegue consume créditos).
+        # Para desactivarlo: Settings → Secrets and variables → Actions → Variables → DATOS_SIN_DEPLOY = false
+        id: origen
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PRIVADO=$(gh api "repos/$GITHUB_REPOSITORY" --jq .private 2>/dev/null || echo true)
+          if [ "$PRIVADO" = "false" ] && [ "${{ vars.DATOS_SIN_DEPLOY }}" != "false" ]; then
+            printf '{"base": "https://raw.githubusercontent.com/%s/%s/public/"}\n' "$GITHUB_REPOSITORY" "$GITHUB_REF_NAME" > public/data/origen.json
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "Repositorio público: los datos se publican sin redesplegar Netlify."
+          else
+            rm -f public/data/origen.json
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+            echo "AVISO: repositorio privado (o modo desactivado): cada actualización de datos redespliega Netlify y consume créditos."
+          fi
+
+      - name: Publicar cambios
+        run: |
+          git config user.name "TBRL datos"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A public/data
+          if git diff --cached --quiet; then
+            echo "Sin cambios en los datos."
+          else
+            MSG="Datos actualizados $(date -u +'%Y-%m-%d %H:%M') UTC"
+            # solo se omite el despliegue si origen.json ya estaba publicado en Netlify
+            if [ "${{ steps.origen.outputs.skip }}" = "true" ] && git diff --cached --quiet -- public/data/origen.json; then
+              MSG="$MSG [skip netlify]"
+            fi
+            git commit -m "$MSG"
+            # si subiste cambios mientras corría la actualización, los integra antes de guardar
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
+            git push
+          fi

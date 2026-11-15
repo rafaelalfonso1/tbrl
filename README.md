@@ -87,6 +87,8 @@ Netlify → *Add new site → Deploy manually* y arrastra la carpeta **`public`*
 
 Los formularios **no se guardan en GitHub ni en el sitio**: los recibe y almacena **Netlify Forms**.
 
+**Requisito (una sola vez):** Netlify → tu sitio → **Forms → Enable form detection** y luego **Deploys → Trigger deploy → Deploy project**. En sitios nuevos viene desactivado; sin esto los formularios fallan con «Algo salió mal» (las descargas gratuitas se entregan igual, pero no se registra el lead).
+
 - Verlos: Netlify → tu sitio → **Forms**. Hay una lista por formulario: `contact` (contacto), `newsletter` (Monthly Pulse), `free-download` (descargas gratuitas, incluye qué estudio se descargó) y `study-waitlist` (lista de espera de estudios premium).
 - Exportarlos: dentro de cada formulario, **Download as CSV**.
 - Recibirlos por correo: *Project configuration → Notifications → Emails and webhooks → Form submission notifications → Add notification*, con tu correo.
