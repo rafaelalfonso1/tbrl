@@ -5,7 +5,8 @@ public/data/macro/fuente/:
 
   tipo_cambio_mensual.csv    fecha (AAAA-MM), usd_dop_promedio
   tipo_cambio_diario.csv     fecha (AAAA-MM-DD), compra, venta
-  indicadores_mensuales.csv  fecha (AAAA-MM), tpm, inflacion_interanual
+  indicadores_mensuales.csv  fecha (AAAA-MM), tpm, inflacion_interanual, tasa_activa, tasa_pasiva,
+                             tasa_interbancaria, reservas_brutas, imae_interanual
 
 Genera:
   public/data/macro/series.json              (lo lee el Centro de datos)
@@ -29,6 +30,8 @@ MARKETS_JSON = PUB / "data" / "markets.json"
 FUENTE_BCRD = "Banco Central de la República Dominicana (BCRD)"
 URL_BCRD = "https://www.bancentral.gov.do/"
 URL_DGII = "https://www.dgii.gov.do/estadisticas/tasaCambio/1Dlar/"
+URL_BCRD_TASAS = "https://www.bancentral.gov.do/a/d/2536-sector-monetario-y-financiero"
+from fuentes_bcrd import ARCHIVOS as XLS_BCRD  # enlaces directos a los Excel oficiales
 
 
 def read_csv(path):
@@ -133,6 +136,8 @@ def main():
         while s and s[-1][1] is None: s = s[:-1]
         return s
     tpm, infl = trim(tpm), trim(infl)
+    extra = {k: trim(series_from(ind, k)) for k in
+             ("tasa_activa", "tasa_pasiva", "tasa_interbancaria", "reservas_brutas", "imae_interanual")}
     weekly = weekly_from_daily(fx_d)
     daily = [[r["fecha"], num(r.get("compra")), num(r.get("venta"))] for r in fx_d]
 
@@ -142,12 +147,33 @@ def main():
          "hoja": "TC USD-DOP mensual", "unidad": "RD$ por US$", "decimales": 2, "fuente": FUENTE_BCRD + ", serie publicada por la DGII",
          "fuente_url": URL_DGII, "datos": fx_monthly},
         {"id": "tasa_politica_monetaria_mensual", "nombre": "Tasa de política monetaria (TPM)", "frecuencia": "Mensual",
-         "descripcion": "Tasa de interés de política monetaria vigente al cierre de cada mes.",
+         "descripcion": "Tasa de interés de política monetaria vigente en cada mes, según la serie oficial del BCRD.",
          "hoja": "TPM mensual", "unidad": "% anual", "decimales": 2, "fuente": FUENTE_BCRD, "fuente_url": URL_BCRD, "datos": tpm, "escalonada": True},
         {"id": "inflacion_interanual_mensual", "nombre": "Inflación interanual (IPC)", "frecuencia": "Mensual",
          "descripcion": "Variación interanual del índice de precios al consumidor. Banda sombreada: rango meta 4.0% ± 1.0%.",
          "hoja": "Inflación interanual", "unidad": "%", "decimales": 2, "fuente": FUENTE_BCRD, "fuente_url": URL_BCRD, "datos": infl, "banda": [3.0, 5.0]},
+        {"id": "tasa_interbancaria_mensual", "nombre": "Tasa interbancaria", "frecuencia": "Mensual",
+         "descripcion": "Tasa promedio ponderada de las operaciones interbancarias en pesos: el costo del dinero entre bancos.",
+         "hoja": "Tasa interbancaria", "unidad": "% anual", "decimales": 2, "fuente": FUENTE_BCRD, "fuente_url": URL_BCRD_TASAS,
+         "datos": extra["tasa_interbancaria"]},
+        {"id": "tasa_activa_bm_mensual", "nombre": "Tasa activa de la banca múltiple", "frecuencia": "Mensual",
+         "descripcion": "Tasa de interés promedio ponderada de los préstamos nuevos de los bancos múltiples, en moneda nacional.",
+         "hoja": "Tasa activa BM", "unidad": "% anual", "decimales": 2, "fuente": FUENTE_BCRD, "fuente_url": URL_BCRD_TASAS,
+         "datos": extra["tasa_activa"]},
+        {"id": "tasa_pasiva_bm_mensual", "nombre": "Tasa pasiva de la banca múltiple", "frecuencia": "Mensual",
+         "descripcion": "Tasa de interés promedio ponderada que pagan los bancos múltiples por los depósitos, en moneda nacional.",
+         "hoja": "Tasa pasiva BM", "unidad": "% anual", "decimales": 2, "fuente": FUENTE_BCRD, "fuente_url": URL_BCRD_TASAS,
+         "datos": extra["tasa_pasiva"]},
+        {"id": "reservas_internacionales_brutas_mensual", "nombre": "Reservas internacionales brutas", "frecuencia": "Mensual",
+         "descripcion": "Reservas internacionales brutas del Banco Central al cierre de cada mes.",
+         "hoja": "Reservas brutas", "unidad": "US$ millones", "decimales": 1, "fuente": FUENTE_BCRD, "fuente_url": XLS_BCRD["reservas_brutas"],
+         "datos": extra["reservas_brutas"]},
+        {"id": "imae_interanual_mensual", "nombre": "Actividad económica (IMAE)", "frecuencia": "Mensual",
+         "descripcion": "Variación interanual del Indicador Mensual de Actividad Económica, serie original: el pulso mensual del PIB.",
+         "hoja": "IMAE interanual", "unidad": "%", "decimales": 2, "fuente": FUENTE_BCRD, "fuente_url": XLS_BCRD["imae_interanual"],
+         "datos": extra["imae_interanual"]},
     ]
+    series = [x for x in series if x["datos"]]
     if len(weekly) >= 8:
         series.insert(1, {"id": "tipo_cambio_usd_dop_semanal", "nombre": "Tipo de cambio USD/DOP", "frecuencia": "Semanal",
             "descripcion": "Promedio semanal (semana que inicia el lunes) de la tasa de referencia de compra.",
@@ -171,17 +197,18 @@ def main():
     # ---- conjunto completo mensual (formato ancho) ----
     months = sorted({p[0] for s in series if s["frecuencia"] == "Mensual" for p in s["datos"]})
     lookup = {s["id"]: dict(s["datos"]) for s in series}
-    wide = [[m, lookup["tipo_cambio_usd_dop_mensual"].get(m), lookup["tasa_politica_monetaria_mensual"].get(m),
-             lookup["inflacion_interanual_mensual"].get(m)] for m in months]
-    hdr = ["fecha", "tipo_cambio_usd_dop", "tpm", "inflacion_interanual"]
+    mensuales = [x for x in series if x["frecuencia"] == "Mensual"]
+    wide = [[m] + [lookup[x["id"]].get(m) for x in mensuales] for m in months]
+    hdr = ["fecha"] + [x["id"].replace("_mensual", "") for x in mensuales]
     write_csv(OUT / "tbrl_datos_macro_rd_mensual.csv", hdr, wide)
-    sheets = [("Mensual (todas)", ["fecha", "Tipo de cambio USD/DOP (RD$/US$)", "TPM (% anual)", "Inflación interanual (%)"], wide, "0.00")]
+    sheets = [("Mensual (todas)", ["fecha"] + [f"{x['nombre']} ({x['unidad']})" for x in mensuales], wide, "0.00")]
     for s in series:
         sheets.append((s["hoja"], ["fecha", f"{s['nombre']} ({s['unidad']})"], s["datos"], "0.00"))
     if daily:
         sheets.append(("Tipo de cambio diario", ["fecha", "Compra (RD$/US$)", "Venta (RD$/US$)"], daily, "0.0000"))
     write_xlsx(OUT / "tbrl_datos_macro_rd.xlsx", sheets,
-               [("Contenido", "Tipo de cambio USD/DOP (mensual, semanal y diario), tasa de política monetaria e inflación interanual."),
+               [("Contenido", "Tipo de cambio USD/DOP (mensual, semanal y diario), tasa de política monetaria, inflación, "
+                              "tasas de interés (interbancaria, activa y pasiva), reservas internacionales e IMAE."),
                 ("Fuente", FUENTE_BCRD + "; serie mensual del tipo de cambio publicada por la DGII."),
                 ("Actualizado", today), ("Elaboración", "The Business Research Lab (TBRL)"),
                 ("Uso", "Libre uso citando la fuente: «Fuente: BCRD · Elaboración TBRL». No constituye asesoría de inversión.")])

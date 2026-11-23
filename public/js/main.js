@@ -405,6 +405,9 @@
       $$("[data-dl-daily]").forEach(a => (a.href = B(D.descargas.diario_csv)));
       if (D.series.some(s => s.frecuencia === "Semanal")) $$("[data-weekly-note]").forEach(el => el.remove());
       const ranges = [["1A", 1], ["3A", 3], ["5A", 5], ["Todo", 0]];
+      const short = s => s.nombre.replace(/ de la banca múltiple/, " BM").replace(/ \(.*\)$/, "") + (s.frecuencia === "Semanal" ? " · semanal" : "");
+      $$("[data-datos-nav]").forEach(nav => (nav.innerHTML = D.series.map(s => `<a href="#${esc(s.id)}">${esc(short(s))}</a>`).join("") +
+        (document.getElementById("mercado-inmobiliario") ? `<a href="#mercado-inmobiliario">Mercado inmobiliario</a>` : "")));
       datosRoot.innerHTML = D.series.map((s, k) => `
         <article class="panel dataset reveal" id="${esc(s.id)}">
           <div class="dataset__head">
@@ -432,7 +435,8 @@
         const card = document.getElementById(s.id);
         const all = s.datos.map(([date, value]) => ({ date, value }));
         const dec = s.decimales ?? 2;
-        const f = v => v.toFixed(dec) + (s.unidad.startsWith("%") ? "%" : "");
+        const nf = (v, d) => v.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+        const f = v => nf(v, dec) + (s.unidad.startsWith("%") ? "%" : "");
         const nn = all.filter(p => p.value != null);
         const last = nn[nn.length - 1], prev = nn[nn.length - 2];
         const perYear = s.frecuencia === "Semanal" ? 52 : s.frecuencia === "Diaria" ? 250 : 12;
@@ -452,7 +456,9 @@
         const diff = (a, b) => {
           if (!a || !b) return "—";
           const d = a.value - b.value;
-          return s.unidad.startsWith("%") ? `${d >= 0 ? "+" : ""}${(d * 100).toFixed(0)} pb` : `${d >= 0 ? "+" : ""}${(d / b.value * 100).toFixed(2)}%`;
+          const sg = d >= 0 ? "+" : "";
+          if (s.unidad === "%") return `${sg}${d.toFixed(2)} p.p.`;  // variaciones (inflación, IMAE): puntos porcentuales
+          return s.unidad.startsWith("%") ? `${sg}${(d * 100).toFixed(0)} pb` : `${sg}${(d / b.value * 100).toFixed(2)}%`;
         };
         const per = s.frecuencia === "Semanal" ? "semana" : "mes";
         card.querySelector("[data-kpis]").innerHTML = `
@@ -461,7 +467,7 @@
           <div><span>Vs. hace un año</span><strong>${diff(last, yearAgo)}</strong></div>
           <div><span>Observaciones</span><strong>${nn.length}</strong></div>`;
         const chartEl = card.querySelector("[data-chart]");
-        const opts = { fmt: v => v.toFixed(s.unidad.startsWith("%") ? 2 : 1), step: !!s.escalonada, band: s.banda || null, label: s.nombre + " " + s.frecuencia,
+        const opts = { fmt: v => s.unidad.startsWith("%") ? v.toFixed(2) : Math.abs(v) >= 1000 ? nf(v, 0) : v.toFixed(1), step: !!s.escalonada, band: s.banda || null, label: s.nombre + " " + s.frecuencia,
           color: s.id.startsWith("tasa_politica") ? "#B35231" : "#2C4856" };
         const render = yrs => {
           const pts = yrs ? all.slice(-yrs * perYear) : all;

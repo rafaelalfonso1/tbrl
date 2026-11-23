@@ -60,24 +60,20 @@ Revisa tu consumo en Netlify → *Billing → Usage*.
 |---|---|
 | Tipo de cambio del día (compra/venta) | Automático (PDF diario del BCRD) |
 | Tipo de cambio diario, semanal y promedio mensual | Automático (serie de la DGII con datos del BCRD) |
-| TPM e inflación interanual | **Manual, 1 minuto al mes**: edita `public/data/macro/fuente/indicadores_mensuales.csv` en GitHub y guarda. El sitio se reconstruye solo. |
+| TPM, inflación, tasa interbancaria, tasas activa y pasiva de la banca múltiple, reservas internacionales brutas e IMAE | Automático (archivos Excel oficiales del BCRD, ver `scripts/fuentes_bcrd.py`). Se guardan en `public/data/macro/fuente/indicadores_mensuales.csv`. |
 | Tabla de decisiones de política y próxima reunión | Manual en `public/data/markets.json` (`decisions`, `nextMeeting...`) |
 
-El BCRD no publica la TPM ni la inflación en un formato de máquina estable, por eso se dejan como edición manual. Alternativa: una tarea programada de Claude puede investigarlas y actualizarlas cada mes si conectas tu GitHub a Claude.
+Si el BCRD cambia el formato de un archivo, esa serie conserva sus datos anteriores y el registro de la Action muestra un «AVISO»; el resto sigue actualizándose.
 
-### Formato de `indicadores_mensuales.csv`
+**Fuentes evaluadas que no se pueden automatizar desde GitHub:** ONE, Crédito Público (subastas de bonos de Hacienda), SIMV y la BVRD bloquean las conexiones automáticas (error 403 o verificación de Cloudflare). Además, los boletines de la BVRD prohíben su reproducción sin autorización expresa. Para datos del mercado de valores se requiere un acuerdo de datos con la BVRD o carga manual.
 
-```
-fecha,tpm,inflacion_interanual
-2026-10,5.5,
-2026-11,5.5,4.98     ← agrega una fila por mes; deja vacío lo que aún no se publica
-```
+Para revisar fuentes nuevas sin tocar el sitio: *Actions → Sondeo de fuentes (manual) → Run workflow*. Guarda muestras en la rama `sondeo`.
 
 ## Centro de datos
 
 - Cada serie tiene su dashboard (último dato, variación mensual y anual, gráfico con 1A/3A/5A/Todo, tabla) y botones **CSV** y **Excel**.
 - *Descargar todo* entrega un Excel con hoja «Léeme», hoja con todas las series mensuales y una hoja por serie, más la tasa diaria.
-- Para agregar una serie nueva (remesas, reservas, IMAE…): añade su CSV en `data/macro/fuente/` y una entrada en `construir_datos.py` (lista `series`).
+- Para agregar una serie nueva (remesas, crédito privado…): añade su CSV en `data/macro/fuente/` y una entrada en `construir_datos.py` (lista `series`).
 
 ## Publicar sin GitHub (sin automatización)
 

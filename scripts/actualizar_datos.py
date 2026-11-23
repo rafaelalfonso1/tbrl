@@ -8,6 +8,9 @@ Fuentes (documentos públicos con formato fijo):
      https://cdn.bancentral.gov.do/documents/estadisticas/mercado-cambiario/documents/tasaus_mc.pdf
   2. DGII — tasa de cambio del dólar, serie diaria y promedio mensual (fuente BCRD):
      https://www.dgii.gov.do/estadisticas/tasaCambio/1Dlar/DolarAAAA.pdf
+  3. BCRD — series mensuales en Excel (scripts/fuentes_bcrd.py): TPM, inflación,
+     tasas activa/pasiva de la banca múltiple, tasa interbancaria, reservas
+     internacionales brutas e IMAE.
 
 Diseño a prueba de fallos: si una fuente no responde o cambia de formato, se
 conservan los datos existentes y el proceso termina sin borrar nada.
@@ -26,6 +29,9 @@ ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "public" / "data" / "macro" / "fuente"
 DAILY = SRC / "tipo_cambio_diario.csv"
 MONTHLY = SRC / "tipo_cambio_mensual.csv"
+INDIC = SRC / "indicadores_mensuales.csv"
+INDIC_COLS = ["fecha", "tpm", "inflacion_interanual", "tasa_activa", "tasa_pasiva",
+              "tasa_interbancaria", "reservas_brutas", "imae_interanual"]
 
 BCRD_HOY = "https://cdn.bancentral.gov.do/documents/estadisticas/mercado-cambiario/documents/tasaus_mc.pdf"
 DGII = ["https://www.dgii.gov.do/estadisticas/tasaCambio/1Dlar/Dolar{y}.pdf",
@@ -40,10 +46,10 @@ def log(msg):
     print(msg, flush=True)
 
 
-def fetch(url):
+def fetch(url, pdf=True):
     r = requests.get(url, headers=UA, timeout=45)
     r.raise_for_status()
-    if not r.content.startswith(b"%PDF"):
+    if pdf and not r.content.startswith(b"%PDF"):
         raise ValueError("la respuesta no es un PDF")
     return r.content
 
@@ -224,11 +230,32 @@ def main():
         log(f"DGII {y}: {len(d)} días leídos ({n_d} nuevos) · {len(mo)} promedios ({n_m} actualizados)")
         changes += n_d + n_m
 
+    # 3) BCRD: series mensuales en Excel (cada serie falla por separado sin borrar datos)
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import fuentes_bcrd
+    indic = load(INDIC)
+    for clave, url in fuentes_bcrd.ARCHIVOS.items():
+        try:
+            serie = fuentes_bcrd.LECTORES[clave](fetch(url, pdf=False))
+            if len(serie) < 12:
+                raise ValueError(f"solo {len(serie)} meses leídos")
+        except Exception as e:
+            log(f"AVISO BCRD {clave} (se conservan los datos): {e}")
+            continue
+        n = 0
+        for mes, v in serie.items():
+            row = indic.setdefault(mes, {"fecha": mes})
+            if row.get(clave) != f"{v}":
+                row[clave] = f"{v}"
+                n += 1
+        log(f"BCRD {clave}: {len(serie)} meses (último {max(serie)}) · {n} cambios")
+        changes += n
+
     save(DAILY, daily, ["fecha", "compra", "venta"])
     save(MONTHLY, monthly, ["fecha", "usd_dop_promedio"])
+    save(INDIC, indic, INDIC_COLS)
     log(f"Cambios en fuentes: {changes}")
 
-    sys.path.insert(0, str(ROOT / "scripts"))
     import construir_datos
     construir_datos.main()
 
