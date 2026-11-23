@@ -77,12 +77,33 @@
 </section>
 
 <div class="wrap">
-  <div class="pillars">
-    <div class="pillar reveal"><svg viewBox="0 0 44 44" aria-hidden="true"><rect x="8" y="26" width="5" height="10" rx="1" fill="#B35231"/><rect x="17" y="20" width="5" height="16" rx="1" fill="#B35231"/><rect x="26" y="13" width="5" height="23" rx="1" fill="#B35231"/><rect x="35" y="6" width="5" height="30" rx="1" fill="#B35231"/></svg><h3>Rigurosa</h3><p>Cada cifra con su fuente y su método.</p></div>
-    <div class="pillar pillar--rust reveal"><svg viewBox="0 0 44 44" fill="none" stroke="#FCFAF5" stroke-width="2" aria-hidden="true"><path d="M6 32l10-10 8 6 14-16"/><circle cx="6" cy="32" r="2.5" fill="#B35231"/><circle cx="16" cy="22" r="2.5" fill="#B35231"/><circle cx="24" cy="28" r="2.5" fill="#B35231"/><circle cx="38" cy="12" r="2.5" fill="#B35231"/></svg><h3>Clara</h3><p>Respuestas en lenguaje simple, sin humo.</p></div>
-    <div class="pillar pillar--slate reveal"><svg viewBox="0 0 44 44" fill="none" stroke="#F7F4EB" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M22 6c-6 0-11 5-11 11 0 8 11 21 11 21s11-13 11-21c0-6-5-11-11-11z"/><circle cx="22" cy="17" r="4" stroke="#F0B497"/></svg><h3>Local</h3><p>El peso, el Banco Central, el mercado dominicano.</p></div>
-    <div class="pillar reveal"><svg viewBox="0 0 44 44" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="22" cy="22" r="15" stroke="#2C4856"/><path d="M15 22.5l5 5 9-10" stroke="#B35231"/></svg><h3>Accionable</h3><p>Terminamos en una decisión, no en un informe.</p></div>
+  <div class="pulse" data-pulse>
+    <a class="pulse-card pulse-card--navy reveal" href="mercados.html" data-p="fx">
+      <span class="pulse-card__lab">USD/DOP · <span data-p-date>20 nov 2026</span></span>
+      <strong class="pulse-card__val" data-p-val>59.54</strong>
+      <svg class="pulse-card__spark" viewBox="0 0 120 30" preserveAspectRatio="none" aria-hidden="true" data-p-spark></svg>
+      <span class="pulse-card__note" data-p-note>Compra BCRD · venta 59.98</span>
+    </a>
+    <a class="pulse-card reveal" href="datos.html#tasa_politica_monetaria_mensual" data-p="tpm">
+      <span class="pulse-card__lab">Tasa de política · <span data-p-date>nov 2026</span></span>
+      <strong class="pulse-card__val" data-p-val>5.50%</strong>
+      <svg class="pulse-card__spark" viewBox="0 0 120 30" preserveAspectRatio="none" aria-hidden="true" data-p-spark></svg>
+      <span class="pulse-card__note" data-p-note>Alza de 25 pb en oct 2026</span>
+    </a>
+    <a class="pulse-card reveal" href="datos.html#inflacion_interanual_mensual" data-p="infl">
+      <span class="pulse-card__lab">Inflación interanual · <span data-p-date>oct 2026</span></span>
+      <strong class="pulse-card__val" data-p-val>5.14%</strong>
+      <svg class="pulse-card__spark" viewBox="0 0 120 30" preserveAspectRatio="none" aria-hidden="true" data-p-spark></svg>
+      <span class="pulse-card__note" data-p-note>Sobre el rango meta de 4% ± 1%</span>
+    </a>
+    <a class="pulse-card reveal" href="datos.html#tasa_interbancaria_mensual" data-p="interb">
+      <span class="pulse-card__lab">Tasa interbancaria · <span data-p-date>oct 2026</span></span>
+      <strong class="pulse-card__val" data-p-val>8.20%</strong>
+      <svg class="pulse-card__spark" viewBox="0 0 120 30" preserveAspectRatio="none" aria-hidden="true" data-p-spark></svg>
+      <span class="pulse-card__note" data-p-note>270 pb sobre la TPM</span>
+    </a>
   </div>
+  <p class="pulse-foot">El pulso de hoy · Fuente: BCRD · se actualiza solo dos veces al día · <a href="datos.html">Ver los 9 indicadores →</a></p>
 </div>
 
 <section class="section" id="servicios">

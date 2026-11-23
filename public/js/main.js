@@ -395,6 +395,59 @@
   }
 
   /* ---------- Centro de datos ---------- */
+  /* ---------- El pulso de hoy (inicio) ---------- */
+  const pulse = $("[data-pulse]");
+  if (pulse) {
+    const spark = (svg, vals) => {
+      vals = vals.filter(v => v != null);
+      if (!svg || vals.length < 2) return;
+      const lo = Math.min(...vals), hi = Math.max(...vals), r = hi - lo || 1;
+      const X = i => (i / (vals.length - 1)) * 120, Y = v => 27 - ((v - lo) / r) * 24;
+      const d = vals.map((v, i) => `${i ? "L" : "M"}${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join("");
+      svg.innerHTML = `<path d="${d}"/><circle cx="120" cy="${Y(vals[vals.length - 1]).toFixed(1)}" r="3"/>`;
+    };
+    const set = (key, { val, date, note, vals }) => {
+      const c = pulse.querySelector(`[data-p="${key}"]`); if (!c) return;
+      if (val != null) c.querySelector("[data-p-val]").textContent = val;
+      if (date) c.querySelector("[data-p-date]").textContent = date;
+      if (note) c.querySelector("[data-p-note]").textContent = note;
+      if (vals) spark(c.querySelector("[data-p-spark]"), vals);
+    };
+    const pct = v => v.toFixed(2) + "%";
+    const mes = iso => fmtDate(iso, { month: "short", year: "numeric" });
+    Promise.all([fetchData("data/macro/series.json").catch(() => null), fetchData("data/markets.json").catch(() => null)]).then(([S, M]) => {
+      const by = {};
+      ((S && S.d.series) || []).forEach(s => (by[s.id] = s.datos.filter(p => p[1] != null)));
+      const last = id => (by[id] || []).slice(-1)[0];
+      const fx = M && M.d.fx;
+      const fxW = by.tipo_cambio_usd_dop_semanal || by.tipo_cambio_usd_dop_mensual || [];
+      if (fx && fx.buy) set("fx", { val: fx.buy.toFixed(2), date: fmtDate(fx.date, { day: "numeric", month: "short", year: "numeric" }),
+        note: `Compra BCRD · venta ${fx.sell ? fx.sell.toFixed(2) : "—"}`, vals: fxW.slice(-26).map(p => p[1]) });
+      const tpm = by.tasa_politica_monetaria_mensual || [];
+      if (tpm.length) {
+        const [d, v] = tpm[tpm.length - 1];
+        let k = tpm.length - 1; while (k > 0 && tpm[k - 1][1] === v) k--;
+        const dif = k > 0 ? Math.round((v - tpm[k - 1][1]) * 100) : 0;
+        const note = dif ? `${dif > 0 ? "Alza" : "Baja"} de ${Math.abs(dif)} pb en ${mes(tpm[k][0])}` : "Sin cambios";
+        set("tpm", { val: pct(v), date: mes(d), note, vals: tpm.slice(-24).map(p => p[1]) });
+      }
+      const inf = by.inflacion_interanual_mensual || [];
+      if (inf.length) {
+        const [d, v] = inf[inf.length - 1];
+        set("infl", { val: pct(v), date: mes(d), note: v > 5 ? "Sobre el rango meta de 4% ± 1%" : v < 3 ? "Bajo el rango meta de 4% ± 1%" : "Dentro del rango meta de 4% ± 1%",
+          vals: inf.slice(-24).map(p => p[1]) });
+      }
+      const ib = by.tasa_interbancaria_mensual || [];
+      if (ib.length) {
+        const [d, v] = ib[ib.length - 1];
+        const t = tpm.find(p => p[0] === d) || last("tasa_politica_monetaria_mensual");
+        const sp = t ? Math.round((v - t[1]) * 100) : null;
+        set("interb", { val: pct(v), date: mes(d), note: sp == null ? "Promedio mensual" : `${Math.abs(sp)} pb ${sp >= 0 ? "sobre" : "bajo"} la TPM`,
+          vals: ib.slice(-24).map(p => p[1]) });
+      }
+    });
+  }
+
   const datosRoot = $("[data-datos]");
   if (datosRoot) {
     fetchData("data/macro/series.json").then(({ d: D, base }) => {

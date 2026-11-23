@@ -184,18 +184,26 @@ p { margin: 0 0 1em; }
 .chip--good { background: #DCEFE5; color: var(--good); }
 .chip--dot::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
 
-/* ---------- Pillars (Research / Analytics / Strategy / Innovation) ---------- */
-.pillars { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: -64px; position: relative; z-index: 2; }
-.pillar {
-  border-radius: var(--radius); padding: 30px 24px; text-align: center; box-shadow: var(--shadow);
-  background: var(--paper); transition: transform .25s;
+/* ---------- El pulso de hoy (datos en vivo bajo el hero) ---------- */
+.pulse { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: -64px; position: relative; z-index: 2; }
+.pulse-card {
+  display: flex; flex-direction: column; gap: 4px; padding: 20px 22px 18px; border-radius: var(--radius);
+  background: var(--paper); box-shadow: var(--shadow); color: var(--ink); text-decoration: none; transition: transform .25s;
 }
-.pillar:hover { transform: translateY(-4px); }
-.pillar svg { width: 44px; height: 44px; margin: 0 auto 14px; }
-.pillar h3 { margin: 0 0 4px; }
-.pillar p { margin: 0; font-size: .9rem; color: var(--ink-2); }
-.pillar--rust { background: var(--rust); } .pillar--rust h3, .pillar--rust p { color: var(--paper); }
-.pillar--slate { background: var(--slate-800); } .pillar--slate h3, .pillar--slate p { color: var(--ivory); }
+.pulse-card:hover, .pulse-card:focus-visible { transform: translateY(-4px); }
+.pulse-card__lab { font-size: .74rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+.pulse-card__val { font-size: 2.1rem; font-weight: 800; line-height: 1.1; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.pulse-card__spark { width: 100%; height: 30px; margin: 6px 0 4px; overflow: visible; }
+.pulse-card__spark path { fill: none; stroke: var(--slate); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.pulse-card__spark circle { fill: var(--rust); }
+.pulse-card__note { font-size: .86rem; color: var(--ink-2); }
+.pulse-card--navy { background: var(--slate); color: var(--ivory); }
+.pulse-card--navy .pulse-card__lab { color: var(--accent-on-navy); }
+.pulse-card--navy .pulse-card__note { color: var(--slate-200); }
+.pulse-card--navy .pulse-card__spark path { stroke: var(--rust-on-navy); }
+.pulse-card--navy .pulse-card__spark circle { fill: var(--ivory); }
+.pulse-foot { margin: 14px 2px 0; font-size: .84rem; color: var(--ink-3); }
+.pulse-foot a { color: var(--rust); font-weight: 600; }
 
 /* ---------- Services ---------- */
 .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
@@ -449,7 +457,7 @@ textarea { resize: vertical; min-height: 130px; }
   .nav a:not(.btn) { padding: 14px 12px; font-size: 1.05rem; border-radius: 10px; }
   .nav .btn { margin: 10px 0 0; }
   .hero-grid, .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
-  .pillars { grid-template-columns: repeat(2, 1fr); margin-top: -40px; }
+  .pulse { grid-template-columns: repeat(2, 1fr); margin-top: -40px; }
   .plans { grid-template-columns: 1fr; max-width: 480px; margin-inline: auto; }
   .plan--featured { transform: none; }
 }
@@ -461,8 +469,11 @@ textarea { resize: vertical; min-height: 130px; }
   .form-grid { grid-template-columns: 1fr; }
   .hero-stats { gap: 22px; }
   .hero-actions .btn { flex: 1 1 100%; }
-  .pillar { padding: 22px 14px; }
-  .pillar p { display: none; }
+  .pulse { gap: 10px; }
+  .pulse-card { padding: 16px 14px 14px; }
+  .pulse-card__val { font-size: 1.6rem; }
+  .pulse-card__lab { font-size: .68rem; letter-spacing: .05em; }
+  .pulse-card__note { font-size: .78rem; }
   .toolbar { flex-direction: column; align-items: stretch; }
   .search { flex: 1 1 auto; }
   .filters { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; }
