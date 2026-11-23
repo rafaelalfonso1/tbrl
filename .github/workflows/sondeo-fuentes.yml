@@ -2,6 +2,10 @@ name: Sondeo de fuentes (manual)
 # Descarga muestras de fuentes oficiales candidatas a la rama "sondeo" (no toca main ni Netlify).
 on:
   workflow_dispatch:
+    inputs:
+      urls:
+        description: "URLs adicionales separadas por espacio (opcional)"
+        required: false
 permissions:
   contents: write
 jobs:
@@ -26,7 +30,7 @@ jobs:
             "$B/sector-externo/documents/reservas_internacionales.xlsx" \
             "$B/sector-real/documents/imae_2018.xlsx" \
             "$B/precios/documents/ipc_base_2019-2020.xls" \
-            "$B/precios/documents/ipc_subyacente_base_2019-2020.xlsx"; do
+            "$B/precios/documents/ipc_subyacente_base_2019-2020.xlsx" ${{ inputs.urls }}; do
             curl -sSfL -A "Mozilla/5.0" -O "$u" || echo "falló $u"
           done
           curl -sSL -A "Mozilla/5.0" -o subasta.html "https://www.bancentral.gov.do/a/d/2598-subasta" || true
