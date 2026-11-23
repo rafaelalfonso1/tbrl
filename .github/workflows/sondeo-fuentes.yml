@@ -1,8 +1,9 @@
 name: Sondeo de fuentes (manual)
+# Descarga muestras de fuentes oficiales candidatas a la rama "sondeo" (no toca main ni Netlify).
 on:
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 jobs:
   sondeo:
     runs-on: ubuntu-latest
@@ -13,3 +14,24 @@ jobs:
           python-version: "3.12"
       - run: pip install -r scripts/requirements.txt
       - run: python scripts/sondeo_fuentes.py
+      - name: Guardar muestras en la rama sondeo
+        run: |
+          B=https://cdn.bancentral.gov.do/documents/estadisticas
+          mkdir -p /tmp/m && cd /tmp/m
+          for u in \
+            "$B/sector-monetario-y-financiero/documents/Serie_TPM.xlsx" \
+            "$B/sector-monetario-y-financiero/documents/tbm_activad.xlsx" \
+            "$B/sector-monetario-y-financiero/documents/tbm_pasivad.xlsx" \
+            "$B/sector-monetario-y-financiero/documents/operaciones_interb.xls" \
+            "$B/sector-externo/documents/reservas_internacionales.xlsx" \
+            "$B/sector-real/documents/imae_2018.xlsx" \
+            "$B/precios/documents/ipc_base_2019-2020.xls" \
+            "$B/precios/documents/ipc_subyacente_base_2019-2020.xlsx"; do
+            curl -sSfL -A "Mozilla/5.0" -O "$u" || echo "falló $u"
+          done
+          curl -sSL -A "Mozilla/5.0" -o subasta.html "https://www.bancentral.gov.do/a/d/2598-subasta" || true
+          curl -sSL -A "Mozilla/5.0" -o bvrd_boletin.html -w "bvrd %{http_code}\n" "https://www.bvrd.com.do/" || true
+          ls -la
+          git init -q -b sondeo && git add -A
+          git -c user.name=github-actions -c user.email=actions@github.com commit -qm "Muestras de fuentes $(date -u +%F)"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" sondeo
