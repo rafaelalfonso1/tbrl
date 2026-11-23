@@ -184,6 +184,24 @@ p { margin: 0 0 1em; }
 .chip--good { background: #DCEFE5; color: var(--good); }
 .chip--dot::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
 
+/* ---------- Verbos de acción (bajo el hero) ---------- */
+.actions-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: -64px; position: relative; z-index: 2; }
+.action-card {
+  display: flex; flex-direction: column; gap: 8px; padding: 26px 24px 22px; border-radius: var(--radius);
+  background: var(--paper); box-shadow: var(--shadow); color: var(--ink); text-decoration: none; transition: transform .25s;
+}
+.action-card:hover, .action-card:focus-visible { transform: translateY(-4px); }
+.action-card__word { font-size: 2.15rem; font-weight: 800; line-height: 1; letter-spacing: -.03em; color: var(--slate); }
+.action-card p { margin: 0; font-size: .95rem; line-height: 1.5; color: var(--ink-2); flex: 1; }
+.action-card__go { margin-top: 6px; font-size: .78rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--rust); }
+.action-card__go span { display: inline-block; transition: transform .2s; }
+.action-card:hover .action-card__go span { transform: translateX(4px); }
+.action-card--navy { background: var(--slate); }
+.action-card--navy .action-card__word { color: var(--ivory); }
+.action-card--navy p { color: var(--slate-200); }
+.action-card--navy .action-card__go { color: var(--accent-on-navy); }
+.service:target { box-shadow: 0 0 0 2px var(--rust), var(--shadow); }
+
 /* ---------- El pulso de hoy (datos en vivo bajo el hero) ---------- */
 .pulse { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: -64px; position: relative; z-index: 2; }
 .pulse-card {
@@ -202,6 +220,7 @@ p { margin: 0 0 1em; }
 .pulse-card--navy .pulse-card__note { color: var(--slate-200); }
 .pulse-card--navy .pulse-card__spark path { stroke: var(--rust-on-navy); }
 .pulse-card--navy .pulse-card__spark circle { fill: var(--ivory); }
+.pulse.pulse--band { margin-top: 0; }
 .pulse-foot { margin: 14px 2px 0; font-size: .84rem; color: var(--ink-3); }
 .pulse-foot a { color: var(--rust); font-weight: 600; }
 
@@ -458,6 +477,7 @@ textarea { resize: vertical; min-height: 130px; }
   .nav .btn { margin: 10px 0 0; }
   .hero-grid, .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
   .pulse { grid-template-columns: repeat(2, 1fr); margin-top: -40px; }
+  .actions-row { grid-template-columns: repeat(2, 1fr); margin-top: -40px; }
   .plans { grid-template-columns: 1fr; max-width: 480px; margin-inline: auto; }
   .plan--featured { transform: none; }
 }
@@ -470,6 +490,11 @@ textarea { resize: vertical; min-height: 130px; }
   .hero-stats { gap: 22px; }
   .hero-actions .btn { flex: 1 1 100%; }
   .pulse { gap: 10px; }
+  .actions-row { gap: 10px; }
+  .action-card { padding: 18px 14px 16px; gap: 6px; }
+  .action-card__word { font-size: 1.55rem; }
+  .action-card p { font-size: .82rem; }
+  .action-card__go { font-size: .66rem; letter-spacing: .02em; }
   .pulse-card { padding: 16px 14px 14px; }
   .pulse-card__val { font-size: 1.6rem; }
   .pulse-card__lab { font-size: .68rem; letter-spacing: .05em; }
