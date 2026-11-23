@@ -127,6 +127,22 @@ def parse_dgii_year(pdf_bytes, year):
 
 
 # ---------- almacenamiento ----------
+def cierre_bcrd(fecha):
+    """Fecha de cierre BCRD (día hábil anterior) que corresponde a una tasa DGII por fecha de aplicación."""
+    f = dt.date.fromisoformat(fecha) - dt.timedelta(days=1)
+    while not dia_habil(f):
+        f -= dt.timedelta(days=1)
+    return f.isoformat()
+
+
+# Feriados de fecha fija en RD (no se trasladan): sin cierre cambiario esos días
+FERIADOS_FIJOS = {"01-01", "01-21", "02-27", "08-16", "09-24", "12-25"}
+
+
+def dia_habil(f):
+    return f.weekday() < 5 and f.strftime("%m-%d") not in FERIADOS_FIJOS
+
+
 def load(path, key="fecha"):
     if not path.exists():
         return {}
@@ -183,11 +199,16 @@ def main():
             continue
         n_d = 0
         for fecha, v in d.items():
-            if dt.date.fromisoformat(fecha).weekday() >= 5 or fecha > today.isoformat():
-                continue  # fines de semana repiten el valor del viernes
-            row = daily.get(fecha)
+            if not dia_habil(dt.date.fromisoformat(fecha)) or fecha > today.isoformat():
+                continue  # fines de semana y feriados repiten la tasa anterior
+            # La DGII publica la tasa por fecha de APLICACIÓN: la del día D es el cierre BCRD
+            # del día hábil anterior. Se guarda en la fecha de cierre, igual que la tasa del BCRD.
+            cierre = cierre_bcrd(fecha)
+            if d.get(cierre) == v:
+                continue  # el día anterior no hubo cierre (feriado): no se inventa una fila
+            row = daily.get(cierre)
             if not row:
-                daily[fecha] = {"fecha": fecha, "compra": f"{v}", "venta": ""}
+                daily[cierre] = {"fecha": cierre, "compra": f"{v}", "venta": ""}
                 n_d += 1
             elif not row.get("compra"):
                 row["compra"] = f"{v}"

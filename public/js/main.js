@@ -36,6 +36,10 @@
   /* ---------- Config-driven contact bits ---------- */
   $$("[data-cfg-email]").forEach(el => { el.textContent = CFG.email; el.href = "mailto:" + CFG.email; });
   $$("[data-cfg-location]").forEach(el => { el.textContent = CFG.location; });
+  $$("[data-cfg-email-directo]").forEach(el => {
+    if (!CFG.emailDirecto) { (el.closest("[data-cfg-wrap]") || el).remove(); return; }
+    el.textContent = CFG.emailDirecto; el.href = "mailto:" + CFG.emailDirecto;
+  });
   $$("[data-cfg-phone]").forEach(el => {
     if (!CFG.phone) { (el.closest("[data-cfg-wrap]") || el).remove(); return; }
     el.textContent = CFG.phone; el.href = "tel:" + CFG.phone.replace(/[^\d+]/g, "");
