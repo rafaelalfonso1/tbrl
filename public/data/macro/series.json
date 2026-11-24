@@ -1,5 +1,5 @@
 {
- "actualizado": "2026-11-23",
+ "actualizado": "2026-11-24",
  "series": [
   {
    "id": "tipo_cambio_usd_dop_mensual",
@@ -2052,6 +2052,10 @@
     [
      "2026-11-16",
      59.8569
+    ],
+    [
+     "2026-11-23",
+     59.7375
     ]
    ],
    "descargas": {
