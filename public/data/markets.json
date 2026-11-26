@@ -1,12 +1,12 @@
 {
   "sample": false,
-  "updated": "2026-11-25",
+  "updated": "2026-11-26",
   "sourceNote": "Banco Central de la República Dominicana (BCRD). Serie mensual de la tasa de cambio publicada por la DGII con datos del BCRD.",
   "fx": {
     "pair": "USD/DOP",
-    "buy": 59.7375,
-    "sell": 60.223,
-    "date": "2026-11-23"
+    "buy": 60.3732,
+    "sell": 60.7912,
+    "date": "2026-11-25"
   },
   "policy": {
     "tpm": 5.5,
